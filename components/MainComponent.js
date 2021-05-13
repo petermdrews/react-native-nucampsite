@@ -1,39 +1,42 @@
 import React, { Component } from "react";
 import Directory from "./DirectoryComponent";
 import CampsiteInfo from "./CampsiteInfoComponent";
-import { View } from "react-native";
-import { CAMPSITES } from "../shared/campsites";
+import { View, Platform } from "react-native";
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
+
+const DirectoryNavigator = createStackNavigator(
+  {
+    Directory: { screen: Directory },
+    CampsiteInfo: { screen: CampsiteInfo },
+  },
+  {
+    initialRouteName: "Directory",
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: "#5637DD",
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        color: "#fff",
+      },
+    },
+  }
+);
+
+const AppNavigator = createAppContainer(DirectoryNavigator);
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      campsites: CAMPSITES,
-      selectedCampsite: null,
-    };
-  }
-
-  //Event Handler - updates the state based on the which is selected
-  onCampsiteSelect(campsiteId) {
-    this.setState({ selectedCampsite: campsiteId });
-  }
-
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Directory
-          campsites={this.state.campsites}
-          onPress={(campsiteId) => this.onCampsiteSelect(campsiteId)}
-        />
-        {/*The onCampsiteSelect method above is stored in the Directory component
-        so it is available to be called there when needed*/}
-        <CampsiteInfo
-          campsite={
-            this.state.campsites.filter(
-              (campsite) => campsite.id === this.state.selectedCampsite
-            )[0]
-          }
-        />
+      <View
+        style={{
+          flex: 1,
+          paddingTop:
+            Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight, //This line of code is an example of how to use configure your app to look good across operating systems
+        }}
+      >
+        <AppNavigator />
       </View>
     );
   }
