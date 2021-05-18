@@ -3,7 +3,7 @@ import { ScrollView, Text, FlatList } from "react-native";
 import { ListItem, Card } from "react-native-elements";
 import { PARTNERS } from "../shared/partners";
 
-function Mission(props) {
+function Mission() {
   return (
     <Card title="Our Mission">
       <Text style={{ margin: 10 }}>
@@ -32,7 +32,7 @@ class About extends Component {
   };
 
   render() {
-    function RenderPartner({ item }) {
+    function renderPartner({ item }) {
       return (
         <ListItem
           title={item.name}
@@ -48,7 +48,7 @@ class About extends Component {
           <FlatList
             data={this.state.partners}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={RenderPartner}
+            renderItem={renderPartner}
           />
         </Card>
       </ScrollView>
