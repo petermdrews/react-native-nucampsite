@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, FlatList } from "react-native";
 import { Card, Icon } from "react-native-elements";
-import { CAMPSITES } from "../shared/campsites";
-import { COMMENTS } from "../shared/comments";
+import { connect } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
+
+const mapStateToProps = (state) => {
+  return {
+    campsites: state.campsites,
+    comments: state.comments,
+  };
+};
 
 function RenderCampsite(props) {
   //The below line of code is how you can destructure props outside of the function definition
@@ -12,7 +19,7 @@ function RenderCampsite(props) {
     return (
       <Card
         featuredTitle={campsite.name}
-        image={require("./images/react-lake.jpg")}
+        image={{ url: baseUrl + campsite.image }}
       >
         <Text style={{ margin: 10 }}>{campsite.description}</Text>
         <Icon
@@ -61,8 +68,6 @@ class CampsiteInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      campsites: CAMPSITES,
-      comments: COMMENTS,
       favorite: false,
     };
   }
@@ -86,10 +91,10 @@ class CampsiteInfo extends Component {
     /* Because the campsite array is stored in the local state, 
     the line of code below pulls the campsite object we want from 
     the array using the filter method */
-    const campsite = this.state.campsites.filter(
+    const campsite = this.props.campsites.campsites.filter(
       (campsite) => campsite.id === campsiteId
     )[0];
-    const comments = this.state.comments.filter(
+    const comments = this.props.comments.comments.filter(
       (comment) => comment.campsiteId === campsiteId
     );
     return (
@@ -105,4 +110,4 @@ class CampsiteInfo extends Component {
   }
 }
 
-export default CampsiteInfo;
+export default connect(mapStateToProps)(CampsiteInfo);
