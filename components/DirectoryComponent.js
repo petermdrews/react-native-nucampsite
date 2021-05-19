@@ -30,7 +30,7 @@ class Directory extends Component {
           to navigate on press. The first argument is the screen to navigate to. The second optional argument adds
           optional parameters to the route. In this case, we're specifying a parameter called campsiteId
           and giving the id of the campsite that was pressed  */
-          imageSrc={{ url: baseUrl + item.image }}
+          imageSrc={{ uri: baseUrl + item.image }}
         /> // The require function above is built in as part of node.js
       );
     };

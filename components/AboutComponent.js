@@ -37,7 +37,7 @@ class About extends Component {
         <ListItem
           title={item.name}
           subtitle={item.description}
-          leftAvatar={{ source: { url: baseUrl + item.image } }}
+          leftAvatar={{ source: { uri: baseUrl + item.image } }}
         />
       );
     }
