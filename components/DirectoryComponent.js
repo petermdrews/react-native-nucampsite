@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { FlatList } from "react-native";
+import { FlatList, View, Text } from "react-native";
 import { Tile } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import Loading from "./LoadingComponent";
 
 const mapStateToProps = (state) => {
   return {
@@ -34,6 +35,17 @@ class Directory extends Component {
         /> // The require function above is built in as part of node.js
       );
     };
+
+    if (this.props.campsites.isLoading) {
+      return <Loading />;
+    }
+    if (this.props.campsites.errMess) {
+      return (
+        <View>
+          <Text>{this.props.campsites.errMess}</Text>
+        </View>
+      );
+    }
     return (
       <FlatList
         data={this.props.campsites.campsites} //the campsites.js data is stored in this compnents state; it isn't being received as props
