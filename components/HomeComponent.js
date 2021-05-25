@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, Animated } from "react-native";
 import { Card } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
@@ -37,13 +37,37 @@ function RenderItem(props) {
 }
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scaleValue: new Animated.Value(0),
+    };
+  }
+
+  animate() {
+    Animated.timing(this.state.scaleValue, {
+      toValue: 1,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start();
+  }
+
+  //When the component mounts, it will call this.animate, which is defined above
+  componentDidMount() {
+    this.animate();
+  }
+
   static navigationOptions = {
     title: "Home",
   };
 
   render() {
     return (
-      <ScrollView>
+      <Animated.ScrollView
+        /*The below transform prop is a great example of how to use animations in a react native app. 
+        You can also use other style props like color and have them change over time in this way */
+        style={{ transform: [{ scale: this.state.scaleValue }] }}
+      >
         <RenderItem
           item={
             this.props.campsites.campsites.filter(
@@ -71,7 +95,7 @@ class Home extends Component {
           isLoading={this.props.partners.isLoading}
           errMess={this.props.partners.errMess}
         />
-      </ScrollView>
+      </Animated.ScrollView>
     );
   }
 }
