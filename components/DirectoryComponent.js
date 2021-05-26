@@ -4,6 +4,7 @@ import { Tile } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
 import Loading from "./LoadingComponent";
+import * as Animatable from "react-native-animatable";
 
 const mapStateToProps = (state) => {
   return {
@@ -21,18 +22,20 @@ class Directory extends Component {
     const { navigate } = this.props.navigation;
     const renderDirectoryItem = ({ item }) => {
       return (
-        <Tile
-          title={item.name}
-          caption={item.description}
-          featured
-          onPress={() =>
-            navigate("CampsiteInfo", { campsiteId: item.id })
-          } /*this uses the navigate function
+        <Animatable.View animation="fadeInRightBig" duration={2000}>
+          <Tile
+            title={item.name}
+            caption={item.description}
+            featured
+            onPress={() =>
+              navigate("CampsiteInfo", { campsiteId: item.id })
+            } /*this uses the navigate function
           to navigate on press. The first argument is the screen to navigate to. The second optional argument adds
           optional parameters to the route. In this case, we're specifying a parameter called campsiteId
           and giving the id of the campsite that was pressed  */
-          imageSrc={{ uri: baseUrl + item.image }}
-        /> // The require function above is built in as part of node.js
+            imageSrc={{ uri: baseUrl + item.image }}
+          />
+        </Animatable.View>
       );
     };
 
