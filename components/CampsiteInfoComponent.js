@@ -34,10 +34,20 @@ function RenderCampsite(props) {
   //The below line of code is how you can destructure props outside of the function definition
   const { campsite } = props;
 
+  const view = React.createRef();
+
   const recognizeDrag = ({ dx }) => (dx < -200 ? true : false);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
+    onPanResponderGrant: () => {
+      view.current
+        .pulse(1000)
+        .then((endState) =>
+          console.log(endState.finished ? "finished" : "canceled")
+        ); /*the .then statement here logs whether or not the animation is finished. Could use this to 
+        add another event handler or action at the end of an animation */
+    },
     onPanResponderEnd: (e, gestureState) => {
       console.log("pan responder end", gestureState);
       if (recognizeDrag(gestureState)) {
@@ -72,6 +82,7 @@ function RenderCampsite(props) {
         duration={2000}
         delay={1000}
         {...panResponder.panHandlers}
+        ref={view}
       >
         <Card
           featuredTitle={campsite.name}
